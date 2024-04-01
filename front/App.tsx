@@ -1,5 +1,7 @@
+import {NavigationContainer} from '@react-navigation/native';
 import React, {useState} from 'react';
-import {SafeAreaView, StyleSheet, Text, TextInput, View} from 'react-native';
+import {StyleSheet} from 'react-native';
+import AuthStackNavigator from './src/navigation/AuthStackNavigator';
 
 function App(): React.JSX.Element {
   const [name, setName] = useState('');
@@ -9,16 +11,9 @@ function App(): React.JSX.Element {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.inputContainer}>
-        <Text>맛집맛집</Text>
-        <TextInput
-          value={name}
-          onChangeText={handleChangeInput}
-          style={styles.input}
-        />
-      </View>
-    </SafeAreaView>
+    <NavigationContainer>
+      <AuthStackNavigator />
+    </NavigationContainer>
   );
 }
 
