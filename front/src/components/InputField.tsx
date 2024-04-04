@@ -1,46 +1,33 @@
-import React, {useRef} from 'react';
-import {
-  Dimensions,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  TextInputProps,
-  View,
-} from 'react-native';
+import React, {ForwardedRef, forwardRef, useRef} from 'react';
+import {Dimensions, Pressable, StyleSheet, Text, TextInput, TextInputProps, View} from 'react-native';
 import {colors} from '../constants';
+import {mergeRefs} from '../utils';
 
 interface InputFieldProps extends TextInputProps {
   disabled?: boolean;
   error?: string;
   touched?: boolean;
+  label: string;
 }
 
 const deviceHeight = Dimensions.get('screen').height;
 
-function InputField({
-  disabled = false,
-  error,
-  touched,
-  ...props
-}: InputFieldProps) {
+const InputField = forwardRef(({disabled = false, error, touched, label, ...props}: InputFieldProps, ref?: ForwardedRef<TextInput>) => {
   const inputRef = useRef<TextInput | null>(null);
+
   const handlePressInput = () => {
     inputRef.current?.focus();
   };
+
   return (
-    <Pressable onPress={handlePressInput}>
-      <View
-        style={[
-          styles.container,
-          disabled && styles.disabled,
-          touched && Boolean(error) && styles.inputError,
-        ]}>
+    <Pressable onPress={handlePressInput} style={styles.pressableContainer}>
+      <Text>{label}</Text>
+      <View style={[styles.container, disabled && styles.disabled, touched && Boolean(error) && styles.inputError]}>
         <TextInput
-          ref={inputRef}
+          style={[styles.input, disabled && styles.disabled]}
+          ref={ref ? mergeRefs(ref, inputRef) : inputRef}
           editable={!disabled}
           placeholderTextColor={colors.GRAY_200}
-          style={[styles.input, disabled && styles.disabled]}
           autoCapitalize="none"
           spellCheck={false}
           autoCorrect={false}
@@ -50,9 +37,13 @@ function InputField({
       </View>
     </Pressable>
   );
-}
+});
 
 const styles = StyleSheet.create({
+  pressableContainer: {
+    gap: 10,
+  },
+
   container: {
     borderWidth: 1,
     borderColor: colors.GRAY_200,
