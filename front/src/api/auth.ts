@@ -2,10 +2,18 @@ import {Category, Profile} from '../types/domain';
 import {getEncryptStorage} from '../utils';
 import axiosInstance from './axios';
 
-export interface RequestUser {
+type RequestUser = {
   email: string;
   password: string;
+};
+
+interface ResponseToken {
+  accessToken: string;
+  refreshToken: string;
 }
+
+type ResponseProfile = Profile & Category;
+
 const postSignup = async ({email, password}: RequestUser): Promise<void> => {
   const {data} = await axiosInstance.post('/auth/signup', {
     email,
@@ -14,10 +22,7 @@ const postSignup = async ({email, password}: RequestUser): Promise<void> => {
   return data;
 };
 
-export interface ResponseToken {
-  accessToken: string;
-  refreshToken: string;
-}
+// 로그인 한 이후 accessToken과 refreshToken이 응답데이터로 온다
 const postLogin = async ({email, password}: RequestUser): Promise<ResponseToken> => {
   const {data} = await axiosInstance.post('/auth/signin', {
     email,
@@ -26,7 +31,6 @@ const postLogin = async ({email, password}: RequestUser): Promise<ResponseToken>
   return data;
 };
 
-export type ResponseProfile = Profile & Category;
 const getProfile = async (): Promise<ResponseProfile> => {
   const {data} = await axiosInstance.get('/auth/me');
   return data;
@@ -35,6 +39,8 @@ const getProfile = async (): Promise<ResponseProfile> => {
 const getAccessToken = async (): Promise<ResponseToken> => {
   // 토큰을 리프레시 성공한다는것 자체가 이미 과거에 로그인 한 이력이 있어서
   // encryptStorage에 리프레시 토큰이 저장되어있음을 의미함
+
+  // encryptStorage에 저장된 refresh 토큰을 access 토큰을 받기 위해 헤더에 담아서 요청하기
   const refreshToken = await getEncryptStorage('refreshToken');
   const {data} = await axiosInstance.get('/auth/refresh', {
     headers: {
@@ -49,3 +55,4 @@ const logout = async () => {
 };
 
 export {getAccessToken, getProfile, logout, postLogin, postSignup};
+export type {RequestUser, ResponseProfile, ResponseToken};

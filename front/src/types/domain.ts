@@ -1,15 +1,15 @@
-export type MarkerColor = 'RED' | 'YELLOW' | 'GREEN' | 'BLUE' | 'PURPLE';
+type MarkerColor = 'RED' | 'YELLOW' | 'GREEN' | 'BLUE' | 'PURPLE';
 
-export type Category = {
+type Category = {
   [key in MarkerColor]: string;
 };
 
-export interface ImageUri {
+interface ImageUri {
   id?: number;
   uri: string;
 }
 
-export interface Marker {
+interface Marker {
   id: number;
   latitude: number;
   longitude: number;
@@ -17,14 +17,14 @@ export interface Marker {
   score: number;
 }
 
-export interface Post extends Marker {
+interface Post extends Marker {
   title: string;
   address: string;
   date: Date | string;
   description: string;
 }
 
-export interface Profile {
+interface Profile {
   id: number;
   email: string;
   nickname: string | null;
@@ -32,3 +32,5 @@ export interface Profile {
   kakaoImageUri: string | null;
   loginType: 'email' | 'kakao' | 'apple';
 }
+
+export type {Category, ImageUri, Marker, MarkerColor, Post, Profile};
