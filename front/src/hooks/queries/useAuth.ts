@@ -1,12 +1,11 @@
+import {queryClient} from '@/api/queryClient';
+import {numbers, queryKeys, storageKey} from '@/constants';
+import {UseMutationCustomOptions, UseQueryCustomOptions} from '@/types/common';
+import {removeEncryptStorage, setEncryptStorage} from '@/utils';
+import {removeHeader, setHeader} from '@/utils/header';
 import {useMutation, useQuery} from '@tanstack/react-query';
 import {useEffect} from 'react';
 import {getAccessToken, getProfile, logout, postLogin, postSignup} from '../../api/auth';
-import {queryClient} from '../../api/queryClient';
-import {queryKeys, storageKey} from '../../constants';
-import {numbers} from '../../constants/numbers';
-import {UseMutationCustomOptions, UseQueryCustomOptions} from '../../types/common';
-import {removeEncryptStorage, setEncryptStorage} from '../../utils';
-import {removeHeader, setHeader} from '../../utils/header';
 
 function useSignup(mutationOptions?: UseMutationCustomOptions) {
   const response = useMutation({
