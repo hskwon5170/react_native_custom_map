@@ -26,9 +26,7 @@ export const validateLogin = (values: ValueProps) => {
   return validateUser(values);
 };
 
-export const validateSignup = (
-  values: ValueProps & {passwordConfirm: string},
-) => {
+export const validateSignUp = (values: ValueProps & {passwordConfirm: string}) => {
   const error = validateUser(values);
   const signUpErrors = {...error, passwordConfirm: ''};
 
